@@ -61,7 +61,7 @@ ui = page_navbar(
   ),
   nav_menu( # looks bad on the shiny app right now, but will look better
     title = "Links",
-    nav_item("the github repo?"),
+    nav_item(tagList(a("GitHub Repo",href="https://github.com/data-at-reed-college/bushtit-database"))),
     nav_item("lab pages?")
   )
 )
