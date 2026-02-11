@@ -1,15 +1,6 @@
 library(tidyr); library(dplyr)
 library(shiny); library(htmltools); library(DT); library(bslib) # last two libs might not be necessary
 
-## TO DO:
-### Have fields for all the data they want - requires the google sheets with sample data
-#### Do this for the other form as well
-### Have R query IP, and then match that to a location (ambitious), or have location prompt
-### Have a description; need that from them
-### Add backend code. Shouldn't be too complicated
-#### We could have a sample of the form update they'll submit though, could be fun.
-##### would require that we split the page into two, might be hard for phones.
-
 ui = page_navbar(
   title = "Bushtit Database Entry",
   sidebar = sidebar(
