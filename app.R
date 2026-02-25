@@ -91,16 +91,18 @@ ui = page_navbar(
       paste(system("cat get_location.js", intern = TRUE), collapse="\n")), # query location
     style="margin-bottom:50px;",
     title = "Nest Update",
-    textInput("observer_update_form", "Observer", value = ""), # could be a choice if there are a discrete number of people... would also require more maintenance
-    # No need to query time, R can do that on submission
-    # Working on GPS coordinates. Ideally we shouldn't need users to enter them
-    # Date comes free with R
-    selectInput("nest_state_update_form", "Nest State", nest_state_options),
-    selectInput("parents_update_form", "Parent presence", parent_presence_options),
-    textInput("tags_update_form", "Tags?", "None"), # I don't know what type of data tags_update_form are. This may be better suited to a selectInput()
-    selectInput("bag_construction_update_form", "Bag Construction Types", bag_construction_options),
-    selectInput("predation_update_form", "Signs of Predation?", predation_options),
-    selectInput("stage_update_form", "Stage", stage_options), # Is this the same as nest state? If so, we don't need it and we can just derive it
+    card(
+      selectInput("nest_state_update_form", "Nest State", nest_state_options),
+      selectInput("stage_update_form", "Stage", stage_options), # Is this the same as nest state? If so, we don't need it and we can just derive it
+      selectInput("parents_update_form", "Parent presence", parent_presence_options),
+      selectInput("bag_construction_update_form", "Bag Construction Types", bag_construction_options), min_height=400),
+    card(layout_columns(
+      textInput("observer_update_form", "Observers", value = ""), # could be a choice if there are a discrete number of people... would also require more maintenance
+      # No need to query time, R can do that on submission
+      # Working on GPS coordinates. Ideally we shouldn't need users to enter them
+      # Date comes free with R
+      textInput("tags_update_form", "Tags", "None"), # I don't know what type of data tags_update_form are. This may be better suited to a selectInput()
+      selectInput("predation_update_form", "Predation", predation_options)), min_height=150),
     actionButton("submit_form_update_form", "Submit Nest Update", width = 300),
     textOutput("submit_form_update_form_result"),
     headerPanel(""), headerPanel("") # so we have extra white space at the end of the page
@@ -108,16 +110,18 @@ ui = page_navbar(
   nav_panel(
     style="margin-bottom:50px;",
     title = "New Nest",
-    textInput("observer_new_nest", "Observer", value = ""), # could be a choice if there are a discrete number of people... would also require more maintenance
     # R can get time for free
     # we can get gps for free
     # We can get date for free
-    selectInput("nest_state_new_nest", "Nest State", nest_state_options),
-    selectInput("parents_new_nest", "Parent presence", parent_presence_options),
-    textInput("tags_new_nest", "Tags?", "None"), # I don't know what type of data tags are. This may be better suited to a selectInput()
-    selectInput("bag_construction_new_nest", "Bag Construction Types", bag_construction_options),
-    selectInput("predation_new_nest", "Signs of Predation?", predation_options),
-    selectInput("stage_new_nest", "Stage", stage_options), # Is this the same as nest state? If so, we don't need it and we can just derive it
+    card(
+      selectInput("nest_state_new_nest", "Nest State", nest_state_options),
+      selectInput("stage_new_nest", "Stage", stage_options), # Is this the same as nest state? If so, we don't need it and we can just derive it
+      selectInput("parents_new_nest", "Parent presence", parent_presence_options),
+      selectInput("bag_construction_new_nest", "Bag Construction Types", bag_construction_options), min_height=400),
+    card(layout_columns(
+      textInput("observer_new_nest", "Observers", value = ""), # could be a choice if there are a discrete number of people... would also require more maintenance
+      textInput("tags_new_nest", "Tags", "None"), # I don't know what type of data tags are. This may be better suited to a selectInput()
+      selectInput("predation_new_nest", "Predation", predation_options)), min_height=150),
     actionButton("submit_form_new_nest", "Submit New Nest form", width = 300),
     textOutput("submit_form_new_nest_result"),
     headerPanel(""), headerPanel("") # so there's extra white space
