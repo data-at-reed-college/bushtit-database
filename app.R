@@ -1,6 +1,17 @@
 library(tidyr); library(dplyr) # these are good to have, but might not be necessary. This is mostly base R or Shiny
 library(shiny); library(htmltools); library(bslib) # shiny libraries
+library(httr)
 
+# We want to add weather utility, this is not too too hard to do
+# We can use the wttr.in utility to do this and curl it through httr::GET
+# I've been having some trouble getting it to work though with lat and lon
+# but it should work just curling as usual
+# try it out in your terminal
+#curl wttr.in
+# we could also do it in R with httr::GET("wttr.in")
+# but this gives too much info, we want to get just the current temp, humidity, and wind
+# this https://wttr.in/:help or this https://itsfoss.gitlab.io/post/how-to-check-weather-details-from-command-line-in-linux/ probably can help
+# I ran out of time to keep working on this or make any actual progress :/
 
 
 submit_form = function(input, output, extension) {
