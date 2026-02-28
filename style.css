@@ -1,0 +1,23 @@
+body {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0); /* text color */
+  }
+
+.bslib-card {
+    border-radius: 5px; /* card border radius */
+    padding: 15px; /* card padding */
+    margin-bottom: 20px; /* space between cards */
+    color: rgb(0, 0, 0); /* text color */
+  }
+
+.btn {
+    background-color: rgb(42, 81, 220);
+    color: rgb(255, 255, 255); /* button text color */
+    border: none; /* remove button border */
+  }
+
+/* style for file input button */
+.btn-file {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+  }

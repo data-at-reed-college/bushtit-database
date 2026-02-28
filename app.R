@@ -91,7 +91,7 @@ stage_options = list(
   "4?" = 4
 )
 
-ui = page_navbar(
+ui = page_navbar(includeCSS("style.css"),
   title = "Bushtit Database Entry",
 #  sidebar = sidebar(
 #    tags$script(
@@ -102,6 +102,8 @@ ui = page_navbar(
       paste(system("cat get_location.js", intern = TRUE), collapse="\n")), # query location
     style="margin-bottom:50px;",
     title = "Nest Update",
+    card(layout_columns(
+      p("weather"), fileInput("file1",NULL),gap="200px"),min_height=100), # this is where we can put the photo and weather info. I don't know how to query weather, but maybe we can get it from the GPS coordinates? We can also get time and date for free with R, so we don't need to ask users to input that.
     card(
       selectInput("nest_state_update_form", "Nest State", nest_state_options),
       selectInput("stage_update_form", "Stage", stage_options), # Is this the same as nest state? If so, we don't need it and we can just derive it
@@ -113,14 +115,17 @@ ui = page_navbar(
       # Working on GPS coordinates. Ideally we shouldn't need users to enter them
       # Date comes free with R
       textInput("tags_update_form", "Tags", "None"), # I don't know what type of data tags_update_form are. This may be better suited to a selectInput()
-      selectInput("predation_update_form", "Predation", predation_options)), min_height=150),
-    actionButton("submit_form_update_form", "Submit Nest Update", width = 300),
+      selectInput("predation_update_form", "Predation", predation_options)),
+      min_height=150),fluidRow(column(width = 2, offset = 3),
+    actionButton("submit_form_update_form", "Submit Nest Update", width = 300)),
     textOutput("submit_form_update_form_result"),
     headerPanel(""), headerPanel("") # so we have extra white space at the end of the page
   ),
   nav_panel(
     style="margin-bottom:50px;",
     title = "New Nest",
+    card(layout_columns(
+      p("weather"), fileInput("file2",NULL),gap="200px"),min_height=100),
     # R can get time for free
     # we can get gps for free
     # We can get date for free
@@ -133,7 +138,8 @@ ui = page_navbar(
       textInput("observer_new_nest", "Observers", value = ""), # could be a choice if there are a discrete number of people... would also require more maintenance
       textInput("tags_new_nest", "Tags", "None"), # I don't know what type of data tags are. This may be better suited to a selectInput()
       selectInput("predation_new_nest", "Predation", predation_options)), min_height=150),
-    actionButton("submit_form_new_nest", "Submit New Nest form", width = 300),
+      fluidRow(column(width = 2, offset = 3),
+    actionButton("submit_form_new_nest", "Submit New Nest form", width = 300)),
     textOutput("submit_form_new_nest_result"),
     headerPanel(""), headerPanel("") # so there's extra white space
   ),
