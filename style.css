@@ -5,7 +5,7 @@ body {
 
 .bslib-card {
     border-radius: 5px; /* card border radius */
-    padding: 15px; /* card padding */
+    padding: 10px; /* card padding */
     margin-bottom: 20px; /* space between cards */
     color: rgb(0, 0, 0); /* text color */
   }

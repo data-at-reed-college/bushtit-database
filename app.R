@@ -103,20 +103,20 @@ ui = page_navbar(includeCSS("style.css"),
     style="margin-bottom:50px;",
     title = "Nest Update",
     card(layout_columns(
-      p("weather"), fileInput("file1",NULL),gap="200px"),min_height=100), # this is where we can put the photo and weather info. I don't know how to query weather, but maybe we can get it from the GPS coordinates? We can also get time and date for free with R, so we don't need to ask users to input that.
+      p("weather"), fileInput("file1",NULL,width = 300),gap="200px"),min_height=95), # this is where we can put the photo and weather info. I don't know how to query weather, but maybe we can get it from the GPS coordinates? We can also get time and date for free with R, so we don't need to ask users to input that.
     card(
-      selectInput("nest_state_update_form", "Nest State", nest_state_options),
-      selectInput("stage_update_form", "Stage", stage_options), # Is this the same as nest state? If so, we don't need it and we can just derive it
-      selectInput("parents_update_form", "Parent presence", parent_presence_options),
-      selectInput("bag_construction_update_form", "Bag Construction Types", bag_construction_options), min_height=400),
+      selectInput("nest_state_update_form", "Nest State", nest_state_options, width = 400),
+      selectInput("stage_update_form", "Stage", stage_options, width = 400), # Is this the same as nest state? If so, we don't need it and we can just derive it
+      selectInput("parents_update_form", "Parent presence", parent_presence_options, width = 400),
+      selectInput("bag_construction_update_form", "Bag Construction Types", bag_construction_options, width = 400), min_height=415),
     card(layout_columns(
-      textInput("observer_update_form", "Observers", value = ""), # could be a choice if there are a discrete number of people... would also require more maintenance
+      textInput("observer_update_form", "Observers", value = "", width = 300), # could be a choice if there are a discrete number of people... would also require more maintenance
       # No need to query time, R can do that on submission
       # Working on GPS coordinates. Ideally we shouldn't need users to enter them
       # Date comes free with R
-      textInput("tags_update_form", "Tags", "None"), # I don't know what type of data tags_update_form are. This may be better suited to a selectInput()
-      selectInput("predation_update_form", "Predation", predation_options)),
-      min_height=150),
+      textInput("tags_update_form", "Tags", "None", width = 300), # I don't know what type of data tags_update_form are. This may be better suited to a selectInput()
+      selectInput("predation_update_form", "Predation", predation_options, width = 300)),
+      min_height=130),
     layout_column_wrap(actionButton("submit_form_update_form", "Submit Nest Update", width = 300),gap="100px"),
     textOutput("submit_form_update_form_result"),
     headerPanel(""), headerPanel("") # so we have extra white space at the end of the page
@@ -125,20 +125,20 @@ ui = page_navbar(includeCSS("style.css"),
     style="margin-bottom:50px;",
     title = "New Nest",
     card(layout_columns(
-      p("weather"), fileInput("file2",NULL),gap="200px"),min_height=100),
+      p("weather"), fileInput("file2",NULL,width = 300),gap="200px"),min_height=95),
     # R can get time for free
     # we can get gps for free
     # We can get date for free
     card(
-      selectInput("nest_state_new_nest", "Nest State", nest_state_options),
-      selectInput("stage_new_nest", "Stage", stage_options), # Is this the same as nest state? If so, we don't need it and we can just derive it
-      selectInput("parents_new_nest", "Parent presence", parent_presence_options),
-      selectInput("bag_construction_new_nest", "Bag Construction Types", bag_construction_options), min_height=400),
+      selectInput("nest_state_new_nest", "Nest State", nest_state_options, width = 400),
+      selectInput("stage_new_nest", "Stage", stage_options, width = 400), # Is this the same as nest state? If so, we don't need it and we can just derive it
+      selectInput("parents_new_nest", "Parent presence", parent_presence_options, width = 400),
+      selectInput("bag_construction_new_nest", "Bag Construction Types", bag_construction_options, width = 400), min_height=415),
     card(layout_columns(
-      textInput("observer_new_nest", "Observers", value = ""), # could be a choice if there are a discrete number of people... would also require more maintenance
-      textInput("tags_new_nest", "Tags", "None"), # I don't know what type of data tags are. This may be better suited to a selectInput()
-      selectInput("predation_new_nest", "Predation", predation_options)), min_height=150),
-    layout_column_wrap(actionButton("submit_form_new_nest", "Submit New Nest", width = 300),gap="100px"),
+      textInput("observer_new_nest", "Observers", value = "", width = 300), # could be a choice if there are a discrete number of people... would also require more maintenance
+      textInput("tags_new_nest", "Tags", "None", width = 300), # I don't know what type of data tags are. This may be better suited to a selectInput()
+      selectInput("predation_new_nest", "Predation", predation_options, width = 300)), min_height=130),
+    layout_column_wrap(actionButton("submit_form_new_nest", "Submit New Nest", width = 300), gap="100px"),
     textOutput("submit_form_new_nest_result"),
     headerPanel(""), headerPanel("") # so there's extra white space
   ),
