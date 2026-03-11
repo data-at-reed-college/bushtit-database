@@ -1,18 +1,28 @@
 library(tidyr); library(dplyr) # these are good to have, but might not be necessary. This is mostly base R or Shiny
 library(shiny); library(htmltools); library(bslib) # shiny libraries
 library(httr)
+library(curl)
 
-# We want to add weather utility, this is not too too hard to do
-# We can use the wttr.in utility to do this and curl it through httr::GET
-# I've been having some trouble getting it to work though with lat and lon
-# but it should work just curling as usual
-# try it out in your terminal
-#curl wttr.in
-# we could also do it in R with httr::GET("wttr.in")
-# but this gives too much info, we want to get just the current temp, humidity, and wind
-# this https://wttr.in/:help or this https://itsfoss.gitlab.io/post/how-to-check-weather-details-from-command-line-in-linux/ probably can help
-# I ran out of time to keep working on this or make any actual progress :/
+# I've started adding weather utility, but shiny is annoyed at me. I'm not quite sure what 
+# it is, and I don't really have time to debug it right now, so I'm sorry if I'm pushing
+# this on to you. Anyway, I suspect it's probably to do with that when we initially get lat
+# and long coordinates, it calls the curl functionality, and maybe there's a significant
+# delay there causing the request to be suspended and maybe R doesn't like that?
+# I've done no testing on this issue, so this is a vague guess.
+# it might also be that I've just put it in the wrong format, I don't know.
 
+get_weather = function(input, output) {
+  if ((!is.na(input$lat) & input$lat) & (!is.na(input$long) & input$long)) {
+    weather_con = curl("wttr.in?format=\"%C_%h_%t_%w\"")
+    open(weather_con)
+    weather = readLines(weather_con)
+    close(weather_con)
+    weather = strsplit(weather, "\"")[[1]][2]
+    weather = strsplit(weather, "_")
+    return(weather)
+  }
+  return("")
+}
 
 submit_form = function(input, output, extension) {
   return(isolate({
@@ -30,6 +40,7 @@ submit_form = function(input, output, extension) {
     }
 
     if (truth) { 
+      weather = get_weather(input, output)
       # if there is geolocation and all fields are filled out
       data_string = paste(
 	input[[paste0("observer_", extension)]],
@@ -41,7 +52,10 @@ submit_form = function(input, output, extension) {
         format(Sys.time(), "%x"),  # get the date
         format(Sys.time(), "%R:%S:%p"), # get the time
 	input$lat, # latitude and longitude from the widget we force on page load
-        input$long,
+	weather[1],
+	weather[3],
+	weather[2],
+	weather[4],
         sep = ",") # sep should be a comma for csv format
       data_string = gsub("\'", "\\\\\'", data_string) # escape single and double quotes
       data_string = gsub("\"", "\\\\\'", data_string) 
@@ -103,7 +117,7 @@ ui = page_navbar(includeCSS("style.css"),
     style="margin-bottom:50px;",
     title = "Nest Update",
     card(layout_columns(
-      p("weather"), fileInput("file1",NULL,width = 300),gap="200px"),min_height=95), # this is where we can put the photo and weather info. I don't know how to query weather, but maybe we can get it from the GPS coordinates? We can also get time and date for free with R, so we don't need to ask users to input that.
+      textOutput("weather"), fileInput("file1",NULL,width = 300),gap="200px"),min_height=95), # this is where we can put the photo and weather info. I don't know how to query weather, but maybe we can get it from the GPS coordinates? We can also get time and date for free with R, so we don't need to ask users to input that.
     card(
       selectInput("nest_state_update_form", "Nest State", nest_state_options, width = 400),
       selectInput("stage_update_form", "Stage", stage_options, width = 400), # Is this the same as nest state? If so, we don't need it and we can just derive it
@@ -160,6 +174,15 @@ server = function(input, output) {
   # I defined a helper function at the beginning of the document to automate submitting the form based on which form we  are submitting (because they require the same information, but I wanted them to be distinct fields.
   observeEvent(input$submit_form_update_form, submit_form(input, output, extension = "update_form"))
   observeEvent(input$submit_form_new_nest, submit_form(input, output, extension = "new_nest"))
+  output$weather = renderText(
+    observeEvent(input$lat, function(input, output) {
+		   w = get_weather(input, output)
+		   return(paste("Weather:\tTemperature:", w[3],
+		     "Conditions:", w[1], 
+		     "Humidity:", w[2], 
+		     "Wind conditions:", w[4]))
+    })
+  )
 }
 
 shinyApp(ui=ui, server=server)
